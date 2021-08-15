@@ -49,12 +49,13 @@ export default class HomeHead extends Vue {
     box-sizing: border-box;
     width: 100%;
     height: 99px;
-    padding: 0 78px;
+    padding: 0 78px 0 50px;
     background: #39ace5;
     display: flex;
     justify-content: space-between;
     align-items: center;
     color: #fff;
+    box-shadow: 0px 6px 14px 0px rgba(0, 0, 0, 0.2);
     .head-left {
       width: 599px;
       height: 99px;
@@ -118,12 +119,13 @@ export default class HomeHead extends Vue {
     flex-direction: column;
     justify-content: flex-end;
     align-items: center;
+    
     img {
       margin-bottom: 4px;
       width: 83%;
-      // height: 55.5px;
     }
     p {
+      box-shadow: 0px -6px 14px 0px rgba(0, 0, 0, 0.2);
       box-sizing: border-box;
       width: 100%;
       height: 80px;

@@ -7,7 +7,19 @@ const routes: Array<RouteConfig> = [
   {
     path: '/',
     name: 'home',
-    component: () => import("@/views/Home/Home.vue")
+    component: () => import("@/views/Home/Home.vue"),
+    children: [
+      {
+      path: 'capitalIdentify',
+      name: 'capitalIdentify',
+      component: () => import("@/views/Home/CapitalIdentify.vue")
+      },
+      {
+        path: 'capitalQuery',
+        name: 'capitalQuery',
+        component: () => import("@/views/Home/CapitalQuery.vue")
+      },
+    ]
   },
   {
     path: '/login',
