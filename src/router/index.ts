@@ -8,6 +8,7 @@ const routes: Array<RouteConfig> = [
     path: '/',
     name: 'home',
     component: () => import("@/views/Home/Home.vue"),
+    redirect: '/capitalIdentify',
     children: [
       {
       path: 'capitalIdentify',

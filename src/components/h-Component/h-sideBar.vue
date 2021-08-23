@@ -2,7 +2,7 @@
   <div id="h-sideBar">
     <div class="username">欢迎登录：{{ barData.username }}</div>
     <div class="sidebar">
-      <div class="animation" :style="{top: animation + 'px'}"></div>
+      <div class="animation" :class="{'a-active': animation}"></div>
       <router-link
         class="barItem"
         v-for="(item, index) in barData.itemArray"
@@ -33,12 +33,12 @@ interface BarData {
 export default class HomeSideBar extends Vue {
   @Prop({}) barData: BarData | undefined;
 
-  private animation: number = 0
+  private animation: boolean = false
   private fontC: number = 0
 
 
   clickHandle(index: number): void{
-    this.animation = 99 * index
+    this.animation = this.fontC === index? this.animation :  !this.animation
     this.fontC = index
   }
 }
@@ -64,19 +64,23 @@ export default class HomeSideBar extends Vue {
       font-size: 23px;
       text-align: center;
       line-height: 80px;
-      border-radius: 15px;
+      border-radius: 20px;
       cursor: pointer;
       transition: all .25s;
     }
     .animation {
       position: absolute;
+      top: 0;
       width: 270px;
       height: 80px;
       background: #39ace5;
       z-index: -1;
-      border-radius: 15px;
+      border-radius: 20px;
       transition: all .25s;
       box-shadow: 0px 6px 14px 0px rgba(0, 0, 0, 0.16);
+    }
+    .a-active {
+      top: 99px;
     }
   }
 }

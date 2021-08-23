@@ -1,13 +1,16 @@
 <template>
   <div id="capitalIdentify">
-    capitalIdentify
+    <IdentSearch/>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator"
+import IdentSearch from "@/components/Identify-com/ident-search.vue";
 
 @Component({
-  components: {},
+  components: {
+    IdentSearch
+  },
 })
 export default class CapitalIdentify extends Vue {
 }
