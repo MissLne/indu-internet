@@ -8,16 +8,16 @@
       <div class="input-box">
         <div>
           <p>资产名称：</p>
-          <el-date-picker type="date" placeholder="选择日期"> </el-date-picker>
+          <el-input placeholder="请输入内容" v-model="searchCtx.name"></el-input>
         </div>
         <div>
           <p>登记日期：</p>
-          <el-input placeholder="请输入内容"></el-input>
+          <el-date-picker type="date" placeholder="选择日期" v-model="searchCtx.date"> </el-date-picker>
         </div>
       </div>
       <div class="btn-box">
-        <div>重置</div>
-        <div>搜索</div>
+        <div @click="reset">重置</div>
+        <div @click="search">搜索</div>
       </div>
     </div>
   </div>
@@ -25,13 +25,28 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 
+
 @Component({
   components: {},
 })
-export default class IdentSearch extends Vue {}
+export default class IdentSearch extends Vue {
+  public searchCtx: any = {
+    date: "",
+    name: ""
+  }
+  reset(): void {
+    this.searchCtx.date = ""
+    this.searchCtx.name = ""
+    // this.bus.$emit('reset')
+  }
+  search(): void {
+    
+    this.$store.commit("SET_SEARCH",this.searchCtx)
+  }
+}
 </script>
 <style lang="scss">
-#identSearch {
+  #identSearch {
   box-sizing: border-box;
   width: 1450px;
   height: 180px;

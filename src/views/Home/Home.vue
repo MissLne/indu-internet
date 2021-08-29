@@ -9,6 +9,7 @@
         </keep-alive>
       </div>
     </div>
+    
   </div>
 </template>
 
@@ -16,10 +17,12 @@
 import { Component, Vue } from "vue-property-decorator";
 import HomeHead from "@/components/h-Component/h-head.vue";
 import HomeSideBar from "@/components/h-Component/h-sideBar.vue";
+import HomeFoot from "@/components/h-Component/h-footer.vue";
 @Component({
   components: {
     HomeHead,
     HomeSideBar,
+    HomeFoot
   },
 })
 export default class Home extends Vue {

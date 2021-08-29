@@ -1,7 +1,7 @@
 <template>
   <div id="login">
     ouo
-    <!-- <button @click="loginClick">登录</button> -->
+    <button @click="loginClick">登录</button>
   </div>
 </template>
 
@@ -12,11 +12,8 @@ import { Component, Vue } from "vue-property-decorator"
   components: {},
 })
 export default class Login extends Vue {
-  // loginClick(): void {
-  //   (this as any).$axios.post("/api/merchant/enter/one/login", {
-  //     account: "LCE",
-  //     password: "123456"
-  //   })
-  // }
+  loginClick(): void {
+    (this as any).$axios.git("/api/industrial-internet/assets/delete/1")
+  }
 }
 </script>
