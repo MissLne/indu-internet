@@ -40,7 +40,6 @@ export default class IdentSearch extends Vue {
     // this.bus.$emit('reset')
   }
   search(): void {
-    
     this.$store.commit("SET_SEARCH",this.searchCtx)
   }
 }

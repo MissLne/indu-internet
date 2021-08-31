@@ -64,7 +64,10 @@ export default class HomeHead extends Vue {
     this.isUser = false
     this.isLayout = true
   }
-
+  sure() {
+    console.log(11);
+    
+  }
 }
 </script>
 <style lang="scss">

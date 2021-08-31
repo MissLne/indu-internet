@@ -19,10 +19,10 @@ export default class Prompt extends Vue {
     require("@/assets/images/homefont/error.png"),
   ];
   created() {
-    // console.log(this.content.type);
+    console.log(this.content.type);
     
-    // this.font = this.imgUrl[this.content.type]
-    // console.log(this.font);
+    this.font = this.imgUrl[this.content.type]
+    console.log(this.font);
     
   }
 }
@@ -41,6 +41,19 @@ export default class Prompt extends Vue {
   font-size: 30px;
   font-weight: bold;
   border-radius: 20px;
+  opacity: 0;
+  animation: prompt 2s;
+  @keyframes prompt {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
   img {
     margin-right: 25px;
     width: 44px;

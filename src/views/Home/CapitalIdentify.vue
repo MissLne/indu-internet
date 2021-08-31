@@ -1,8 +1,8 @@
 <template>
   <div id="capitalIdentify">
     <IdentSearch/>
-    <Table @addList="addList"/>
-    <Addlist v-if="isAdd" @close="close"/>
+    <Table @addList="addList($event)"/>
+    <Addlist v-if="isAdd" @close="close" :updateData="updateData"/>
   </div>
 </template>
 <script lang="ts">
@@ -20,7 +20,11 @@ import Addlist from "@/components/Identify-com/add.vue";
 })
 export default class CapitalIdentify extends Vue {
   private isAdd: boolean = false
-  private addList():void {
+  private updateData: unknown = {}
+  private addList(data: unknown):void {
+    this.updateData = data
+    // console.log(data);
+    
     this.isAdd = true
   }
   private close(): void {

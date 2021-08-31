@@ -11,8 +11,10 @@ service.interceptors.request.use(
   (config: AxiosRequestConfig) => {
     if (localStorage.token) {
       config.headers.Authorization = localStorage.token
+      
       // config.headers.token = localStorage.getItem("token")
     }
+    config.headers["Content-Type"] = "application/x-www-form-urlencoded" 
     return config
   },
   (err: any) => {

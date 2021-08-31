@@ -28,19 +28,28 @@
           'text-align': 'center',
         }"
       >
-        <el-table-column prop="identification" label="资产标识">
+        <el-table-column prop="handle" label="资产标识">
         </el-table-column>
         <el-table-column prop="name" label="资产名称"> </el-table-column>
-        <el-table-column prop="describe" label="资产描述"> </el-table-column>
+        <el-table-column prop="note" label="资产描述"> </el-table-column>
         <el-table-column prop="source" label="资产来源"> </el-table-column>
-        <el-table-column prop="explain" label="规格说明"> </el-table-column>
-        <el-table-column prop="date" label="登记日期"> </el-table-column>
+        <el-table-column prop="specifications" label="规格说明"> </el-table-column>
+        <el-table-column prop="builddate" label="登记日期"> </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <div class="clickBtn">
-              <p @click="handleToDetail(scope.row)" style="color: #6767C6;">详情</p>
-            <p @click="handleToUpdate(scope.row)" style="color: #6767C6;">修改</p>
-            <p @click="handleToDelete(scope.row)" style="color: #C66767;">删除</p>
+              <Square
+                v-if="isDelete"
+                :deleteItem="scope.row"
+                @cancelDelete="cancelDelete($event)"
+              />
+              <p @click="handleToDetail(scope.row)" style="color: #6767c6">
+                详情
+              </p>
+              <p @click="handleToUpdate(scope.row)" style="color: #6767c6">
+                修改
+              </p>
+              <p @click="isDelete = true" style="color: #c66767">删除</p>
             </div>
           </template>
         </el-table-column>
@@ -56,41 +65,59 @@
       >
       </el-pagination>
       <div class="t-btn">
-        <input v-model="currentPage2" @focus="foucs" @blur="blur"/>
+        <input v-model="currentPage2" @focus="foucs" @blur="blur" />
         <div @click="jumpPage" class="sure">确定</div>
       </div>
     </div>
     <HomeFoot :isHome="true"></HomeFoot>
-    <Prompt :content="proContent" v-if="false"/>
+    <Prompt :content="proContent" v-if="isPrompt" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
-import HomeFoot from "@/components/h-Component/h-footer.vue";
-import Prompt from "@/components/prompt.vue";
+import moment from "moment";
 import { State, Getter, Mutation, Action } from "vuex-class";
+
+import HomeFoot from "@/components/h-Component/h-footer.vue";
+import Square from "./square.vue";
+import Addlist from "./add.vue";
+import Prompt from "@/components/prompt.vue";
+
 class TableItem {
-  private identification: string = "";
+  private handle: string = "";
   private name: string = "";
-  private describe: string = "";
+  private note: string = "";
   private source: string = "";
-  private explain: string = "";
-  private date: string = "";
+  private specifications: string = "";
+  private builddate: string = "";
 }
+
 @Component({
   components: {
     HomeFoot,
-    Prompt
+    Prompt,
+    Square,
+    Addlist,
   },
 })
 export default class Table extends Vue {
   @Getter("homesearch") getSearch: any;
-  @Watch("getSearch",{deep: true}) search(){
-    console.log("嘤嘤嘤")
+  @Watch("getSearch", { deep: true }) search() {
+    let str = moment(this.getSearch.date)
+      .format("YYYY-MM-DD hh:mm:ss")
+      .slice(0, 10);
+    console.log(this.getSearch);
+    (this as any).$axios
+      .post("/api/industrial-internet/assets/getAssetBy", {
+        buildDate: str,
+        name: this.getSearch.name,
+      })
+      .then((res: any) => {});
   }
   private tableData: Array<TableItem> = [];
-
+  private isDelete: boolean = false;
+  private isPrompt: boolean = false;
   private currentPage1: number | string = 1;
   private currentPage2: number | string = "点击输入页码";
   private total: number = 0;
@@ -98,131 +125,138 @@ export default class Table extends Vue {
   private proContent: object = {
     type: 1,
     text: "导入成功！",
-    class: "tipMissing"
-  }
+    class: "tipMissing",
+  };
   private list = [
     {
-      identification: "88.236.1/a01-000000000001",
+      handle: "88.236.1/a01-000000000001",
       name: "ouo",
-      describe: "可爱温柔小姐姐",
+      note: "可爱温柔小姐姐",
       source: "1",
-      explain: "可爱温柔小姐姐",
-      date: "2021-08-01",
+      specifications: "可爱温柔小姐姐",
+      builddate: "2021-08-01",
     },
     {
-      identification: "88.236.900001/a01-000000000001",
-      name: "QAQ",
-      describe: "可爱温柔小姐姐",
-      source: "2",
-      explain: "可爱温柔小姐姐",
-      date: "2021-08-01",
+      handle: "88.236.1/a01-000000000001",
+      name: "ouo",
+      note: "可爱温柔小姐姐",
+      source: "1",
+      specifications: "可爱温柔小姐姐",
+      builddate: "2021-08-01",
     },
     {
-      identification: "88.236.900001/a01-000000000001",
-      name: "Lnevan",
-      describe: "可爱温柔小姐姐",
-      source: "3",
-      explain: "可爱温柔小姐姐",
-      date: "2021-08-01",
+      handle: "88.236.1/a01-000000000001",
+      name: "ouo",
+      note: "可爱温柔小姐姐",
+      source: "1",
+      specifications: "可爱温柔小姐姐",
+      builddate: "2021-08-01",
     },
     {
-      identification: "88.236.900001/a01-000000000001",
-      name: "Lnevan",
-      describe: "可爱温柔小姐姐",
-      source: "4",
-      explain: "可爱温柔小姐姐",
-      date: "2021-08-01",
+      handle: "88.236.1/a01-000000000001",
+      name: "ouo",
+      note: "可爱温柔小姐姐",
+      source: "1",
+      specifications: "可爱温柔小姐姐",
+      builddate: "2021-08-01",
     },
     {
-      identification: "88.236.900001/a01-000000000001",
-      name: "Lnevan",
-      describe: "可爱温柔小姐姐",
-      source: "5",
-      explain: "可爱温柔小姐姐",
-      date: "2021-08-01",
+      handle: "88.236.1/a01-000000000001",
+      name: "ouo",
+      note: "可爱温柔小姐姐",
+      source: "1",
+      specifications: "可爱温柔小姐姐",
+      builddate: "2021-08-01",
     },
     {
-      identification: "88.236.900001/a01-000000000001",
-      name: "Lnevan",
-      describe: "可爱温柔小姐姐",
-      source: "6",
-      explain: "可爱温柔小姐姐",
-      date: "2021-08-01",
+      handle: "88.236.1/a01-000000000001",
+      name: "ouo",
+      note: "可爱温柔小姐姐",
+      source: "1",
+      specifications: "可爱温柔小姐姐",
+      builddate: "2021-08-01",
     },
     {
-      identification: "88.236.900001/a01-000000000001",
-      name: "Lnevan",
-      describe: "可爱温柔小姐姐",
-      source: "7",
-      explain: "可爱温柔小姐姐",
-      date: "2021-08-01",
+      handle: "88.236.1/a01-000000000001",
+      name: "ouo",
+      note: "可爱温柔小姐姐",
+      source: "1",
+      specifications: "可爱温柔小姐姐",
+      builddate: "2021-08-01",
     },
     {
-      identification: "88.236.900001/a01-000000000001",
-      name: "Lnevan",
-      describe: "可爱温柔小姐姐",
-      source: "8",
-      explain: "可爱温柔小姐姐",
-      date: "2021-08-01",
+      handle: "88.236.1/a01-000000000001",
+      name: "ouo",
+      note: "可爱温柔小姐姐",
+      source: "1",
+      specifications: "可爱温柔小姐姐",
+      builddate: "2021-08-01",
     },
     {
-      identification: "88.236.900001/a01-000000000001",
-      name: "Lnevan",
-      describe: "可爱温柔小姐姐",
-      source: "9",
-      explain: "可爱温柔小姐姐",
-      date: "2021-08-01",
+      handle: "88.236.1/a01-000000000001",
+      name: "ouo",
+      note: "可爱温柔小姐姐",
+      source: "1",
+      specifications: "可爱温柔小姐姐",
+      builddate: "2021-08-01",
     },
     {
-      identification: "88.236.900001/a01-000000000001",
-      name: "Lnevan",
-      describe: "可爱温柔小姐姐",
-      source: "10",
-      explain: "可爱温柔小姐姐",
-      date: "2021-08-01",
+      handle: "88.236.1/a01-000000000001",
+      name: "ouo",
+      note: "可爱温柔小姐姐",
+      source: "1",
+      specifications: "可爱温柔小姐姐",
+      builddate: "2021-08-01",
     },
     {
-      identification: "88.236.900001/a01-000000000001",
-      name: "Lnevan",
-      describe: "可爱温柔小姐姐",
-      source: "11",
-      explain: "可爱温柔小姐姐",
-      date: "2021-08-01",
+      handle: "88.236.1/a01-000000000001",
+      name: "ouo",
+      note: "可爱温柔小姐姐",
+      source: "1",
+      specifications: "可爱温柔小姐姐",
+      builddate: "2021-08-01",
     },
     {
-      identification: "88.236.900001/a01-000000000001",
-      name: "Lnevan",
-      describe: "可爱温柔小姐姐",
-      source: "12",
-      explain: "可爱温柔小姐姐",
-      date: "2021-08-01",
-    },
-    {
-      identification: "88.236.900001/a01-000000000001",
-      name: "Lnevan",
-      describe: "可爱温柔小姐姐",
-      source: "13",
-      explain: "可爱温柔小姐姐",
-      date: "2021-08-01",
-    },
+      handle: "88.236.1/a01-000000000001",
+      name: "ouo",
+      note: "可爱温柔小姐姐",
+      source: "1",
+      specifications: "可爱温柔小姐姐",
+      builddate: "2021-08-01",
+    }
   ];
-  private searchCtx: {} = this.$store.state.homeSearch
+  private searchCtx: {} = this.$store.state.homeSearch;
+
+  private isUpdate: boolean = false;
   async mounted() {
     this.total = this.list.length;
     this.tableData = this.lala(5, 1);
     // this.tableData = this.list
   }
   addlist() {
-    this.$emit("addList")
+    this.$emit("addList",{isUpdate: 0});
   }
-  handleToDelete(data: object):void {
-    console.log(data)
+  cancelDelete(e: any): void {
+    this.isDelete = false;
+    if (e.sure === 1) {
+      this.proContent = {
+        type: 0,
+        text: "删除成功！",
+        class: "success",
+      };
+      this.isPrompt = true;
+      setTimeout(() => {
+        this.isPrompt = false;
+      }, 3000);
+    }
   }
-  handleToDetail(data: object):void {
-    console.log(data)
+  handleToDetail(data: object): void {
+    console.log(data);
   }
-  handleToUpdate(data: object):void {
-    console.log(data)
+  handleToUpdate(data: object): void {
+    this.$emit("addList", { ...data, isUpdate: 1 });
+    // this.isUpdate = true
+    // console.log(data);
   }
   lala(pageSize: number, pageNum: number) {
     let number: number = Math.ceil(this.list.length / pageSize);
@@ -238,13 +272,13 @@ export default class Table extends Vue {
     return this.totalnum[pageNum - 1];
   }
   initData(pagenum: number | string): void {
-    // this.tableData = this.totalnum[pagenum - 1];
+    this.tableData = this.totalnum[pagenum - 1];
   }
   foucs() {
-    this.currentPage2 = ""
+    this.currentPage2 = "";
   }
   blur() {
-    if(this.currentPage2 == "") this.currentPage2 = "点击输入页码"
+    if (this.currentPage2 == "") this.currentPage2 = "点击输入页码";
   }
   jumpPage(): void {
     this.currentPage1 = this.currentPage2;
@@ -304,15 +338,15 @@ export default class Table extends Vue {
     align-items: center;
     .t-btn {
       display: flex;
-    justify-content: flex-end;
-    align-items: center;
+      justify-content: flex-end;
+      align-items: center;
     }
     input {
       width: 164px;
       height: 50px;
       border-radius: 10px 0 0 10px;
       border: none;
-      background: #9BD5F1;
+      background: #9bd5f1;
       text-align: center;
       color: #dbebf3;
       font-size: 19px;
@@ -321,7 +355,7 @@ export default class Table extends Vue {
     .sure {
       width: 88px;
       height: 50px;
-      background: #39ACE5;
+      background: #39ace5;
       color: #fff;
       font-size: 19px;
       text-align: center;
