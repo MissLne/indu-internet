@@ -8,12 +8,12 @@ module.exports = {
     hotOnly: false,
     proxy: {
       // 配置跨域
-      '/api': {
-        target: 'http://47.119.112.252:8089/party/',
+      '/industrial-internet': {
+        target: 'http://47.119.112.252:8070/',
         ws: true,
         changOrigin: true,
         pathRewrite: {
-          '^/api': ''
+          // '^/api': ''
         }
       }
     },
