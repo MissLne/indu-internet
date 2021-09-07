@@ -1,6 +1,6 @@
 <template>
   <div id="login">
-    <MsgBox ref="msgBox"/>
+    <!-- <MsgBox ref="msgBox"/> -->
     <HomeHead :isHome="false"/>
     <div class="login-wrap" :style="{ '--wrap-height': isSpread ? '500' : '120' }">
       <div class="title" @click="spreadWrap">登录</div>
@@ -9,19 +9,19 @@
         <LoginInput
           ref="userName"
           :isPW="false" :width="376" :holder="'请输入用户名'"
-          :picSrc="require('@/assets/images/login-input/userName.png')"
+          :picSrc="require('@/assets/images/login/userName.png')"
           v-model="formData.userName"
         />
         <LoginInput
           ref="password"
           :isPW="true" :width="376" :holder="'请输入密码'"
-          :picSrc="require('@/assets/images/login-input/password.png')"
+          :picSrc="require('@/assets/images/login/password.png')"
           v-model="formData.password"
         />
         <LoginInput
           ref="verifyCode"
           :isPW="false" :width="228" :holder="'请输入验证码'"
-          :picSrc="require('@/assets/images/login-input/verifyCode.png')"
+          :picSrc="require('@/assets/images/login/verifyCode.png')"
           v-model="formData.verifyCode"
         />
         <img :src="verifyCodeSrc" alt="" class="code-pic" @click="changeCode">
@@ -35,7 +35,8 @@
 import { Component, Vue } from "vue-property-decorator"
 import HomeHead from "@/components/h-Component/h-head.vue"
 import LoginInput from "@/components/Login/LoginInput.vue"
-import MsgBox from "@/components/Login/MsgBox.vue"
+import MsgBox from "@/utils/MsgBox/MsgBox.vue"
+import Msg from "@/utils/MsgBox/Msg"
 @Component({
   components: {
     HomeHead,
@@ -45,11 +46,9 @@ import MsgBox from "@/components/Login/MsgBox.vue"
 })
 export default class Login extends Vue {
   // 按钮伸展
-  private isSpread: Boolean = false;
+  private isSpread: boolean = false;
   private spreadWrap () {
     this.isSpread = !this.isSpread;
-    // (this.$refs.msgBox as MsgBox).showBox(true, '登陆成功!');
-    // (this.$refs.msgBox as MsgBox).showBox(false, '用户名错误或密码错误!');
   }
   // 表单信息
   private formData: { [key: string]: string } = {
@@ -57,6 +56,15 @@ export default class Login extends Vue {
     "password": '',
     "verifyCode": ''
   }
+  // 获取验证码
+  private verifyCodeSrc: String = '';
+  private changeCode(): void {
+    (this as any).$axios.get('/industrial-internet/api/getVerifyCode', { responseType: 'arraybuffer' })
+    .then((res: any) => {
+      this.verifyCodeSrc = 'data:image/png;base64,' + btoa(new Uint8Array(res.data).reduce((data, byte) => data + String.fromCharCode(byte), ''));
+    })
+  }
+  // 登录
   private loginClick(): void {
     let loginDto = this.formData;
 
@@ -78,39 +86,35 @@ export default class Login extends Vue {
         case 200: // 成功
           localStorage.setItem('token', res.data.token);
           this.$router.push({ name: 'home' });
-          (this.$refs.msgBox as MsgBox).showBox(true, '登陆成功!');
+          Msg.success('登陆成功!');
           break;
         case 10007: // 验证码错误
           (this.$refs.verifyCode as LoginInput).isWrong = true;
           (this.$refs.verifyCode as LoginInput).verifyCodeWrong = true;
+          this.changeCode();
           break;
         case -2: // 用户名或密码错误
-          (this.$refs.msgBox as MsgBox).showBox(false, '用户名错误或密码错误!');
+          Msg.error('用户名错误或密码错误!', false);
+          this.changeCode();
           break;
-        
         default:
-          (this.$refs.msgBox as MsgBox).showBox(false, '未知错误,请稍后重试!');
+          Msg.error('未知错误,请稍后重试!', false);
       }
-    })
-  }
-  // 获取验证码
-  private verifyCodeSrc: String = '';
-  private changeCode(): void {
-    (this as any).$axios.get('/industrial-internet/api/getVerifyCode', { responseType: 'arraybuffer' })
-    .then((res: any) => {
-      this.verifyCodeSrc = 'data:image/png;base64,' + btoa(new Uint8Array(res.data).reduce((data, byte) => data + String.fromCharCode(byte), ''));
     })
   }
   // 生命周期函数
   created() {
-    this.changeCode()
+    this.changeCode();
   }
 }
 </script>
 
 <style lang="scss">
 #login {
-  background-color: yellowgreen;
+  height: 100vh;
+  background: url("../../assets/images/login/background.jpg") center center/ cover no-repeat;
+  /* background-size: cover;
+  background-position: center center; */
   .login-wrap {
     overflow: hidden; 
     width: 580px;

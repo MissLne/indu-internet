@@ -28,17 +28,17 @@ import { Component, Vue, Prop, Model } from 'vue-property-decorator';
   components: {},
 })
 export default class LoginInput extends Vue {
-  @Model('change') model!: String;
-  @Prop() readonly isPW!: Boolean;
-  @Prop() readonly width!: Number;
-  @Prop() readonly holder!: String;
-  @Prop() readonly picSrc!: String;
+  @Model('change') model!: string;
+  @Prop() readonly isPW!: boolean;
+  @Prop() readonly width!: number;
+  @Prop() readonly holder!: string;
+  @Prop() readonly picSrc!: string;
   // 输入框边框与文字
-  private inputData: String = this.holder; // input内的数据
-  private isActive: Boolean = false; // 用于 onFocus 边框绿色
-  private haveData: Boolean = false; // 用于 输入框有内容时 字体变色
-  public isWrong: Boolean = false; // 用于 输入框为空时 边框红色、提示字
-  public verifyCodeWrong: Boolean = false; // 用于 验证码错误提示字
+  private inputData: string = this.holder; // input内的数据
+  private isActive: boolean = false; // 用于 onFocus 边框绿色
+  private haveData: boolean = false; // 用于 输入框有内容时 字体变色
+  public isWrong: boolean = false; // 用于 输入框为空时 边框红色、提示字
+  public verifyCodeWrong: boolean = false; // 用于 验证码错误提示字
   private onFocus(): void {
     this.isWrong = false, this.verifyCodeWrong = false;
     this.isActive = true;
@@ -64,7 +64,7 @@ export default class LoginInput extends Vue {
     })
   }
   // 密码框显示隐藏
-  private isShowPW: Boolean = false;
+  private isShowPW: boolean = false;
   onShowPW() {
     this.isShowPW = !this.isShowPW;
   }

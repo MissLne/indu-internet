@@ -18,7 +18,6 @@
         <img src="@/assets/images/User name_drop down.png" />
       </div>
     </div>
-
     <div class="footer">
       <img src="@/assets/images/logo-with-lines.png"/>
       <p>

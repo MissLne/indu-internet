@@ -9,7 +9,7 @@ module.exports = {
     proxy: {
       // 配置跨域
       '/industrial-internet': {
-        target: 'http://47.119.112.252:8070/',
+        target: 'http://47.119.112.252:8070',
         ws: true,
         changOrigin: true,
         pathRewrite: {

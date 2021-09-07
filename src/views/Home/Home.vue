@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <HomeHead :isHome="true" />
+    <HomeHead :isHome="true"/>
     <div class="demoMain">
       <HomeSideBar :barData="sideBarData" />
       <div class="demoRight">
